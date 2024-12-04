@@ -18,7 +18,7 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var carDisplacement: TextView
     private lateinit var carType: TextView
     private lateinit var carImage: ImageView
-    private lateinit var purchaseButton: Button
+    private lateinit var registerButton: Button
     private var carId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,10 +29,10 @@ class DetailActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼 활성화
-        supportActionBar?.setDisplayShowTitleEnabled(false) // 제목 숨김
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         toolbar.setNavigationOnClickListener {
-            onBackPressed() // 뒤로가기 버튼 동작
+            onBackPressed()
         }
 
         // 뷰 초기화
@@ -42,18 +42,16 @@ class DetailActivity : AppCompatActivity() {
         carDisplacement = findViewById(R.id.carDisplacement)
         carType = findViewById(R.id.carType)
         carImage = findViewById(R.id.carImage)
-        purchaseButton = findViewById(R.id.purchaseButton)
+        registerButton = findViewById(R.id.purchaseButton)
 
-        // 전달받은 자동차 정보 표시
         val car = intent.getParcelableExtra<Car>("car")
         car?.let {
             carId = it.id
             displayCarDetails(it)
         }
 
-        // 구매 버튼 클릭 시 처리
-        purchaseButton.setOnClickListener {
-            Toast.makeText(this, "구매를 진행합니다.", Toast.LENGTH_SHORT).show()
+        registerButton.setOnClickListener {
+            Toast.makeText(this, "차량 등록 완료했습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -72,7 +70,6 @@ class DetailActivity : AppCompatActivity() {
         }
         carType.text = "차종: ${car.type}"
 
-        // Glide로 이미지 리소스 로드
         Glide.with(this)
             .load(car.imageResId)
             .into(carImage)
