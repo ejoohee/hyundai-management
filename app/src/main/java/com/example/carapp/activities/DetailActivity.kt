@@ -1,5 +1,6 @@
 package com.example.carapp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -18,7 +19,7 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var carDisplacement: TextView
     private lateinit var carType: TextView
     private lateinit var carImage: ImageView
-    private lateinit var registerButton: Button
+    private lateinit var submitButton: Button
     private var carId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,12 +38,12 @@ class DetailActivity : AppCompatActivity() {
 
         // 뷰 초기화
         carName = findViewById(R.id.carName)
-        carPrice = findViewById(R.id.carPrice)
-        carFuelEfficiency = findViewById(R.id.carFuelEfficiency)
-        carDisplacement = findViewById(R.id.carDisplacement)
-        carType = findViewById(R.id.carType)
+        carPrice = findViewById(R.id.carPriceTextView)
+        carFuelEfficiency = findViewById(R.id.carFuelEfficiencyTextView)
+        carDisplacement = findViewById(R.id.carDisplacementTextView)
+        carType = findViewById(R.id.carTypeTextView)
         carImage = findViewById(R.id.carImage)
-        registerButton = findViewById(R.id.purchaseButton)
+        submitButton = findViewById(R.id.submitButton)
 
         val car = intent.getParcelableExtra<Car>("car")
         car?.let {
@@ -50,8 +51,15 @@ class DetailActivity : AppCompatActivity() {
             displayCarDetails(it)
         }
 
-        registerButton.setOnClickListener {
-            Toast.makeText(this, "차량 등록 완료했습니다.", Toast.LENGTH_SHORT).show()
+        submitButton.setOnClickListener {
+            if (car != null) {
+                val resultIntent = Intent()
+                resultIntent.putExtra("car", car) // 선택된 자동차 정보를 전달
+                setResult(RESULT_OK, resultIntent)
+                finish() // DetailActivity 종료 후 CarListActivity로 돌아감
+            } else {
+                Toast.makeText(this, "자동차 정보를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -59,19 +67,22 @@ class DetailActivity : AppCompatActivity() {
         carName.text = car.name
         carPrice.text = "${car.price} 만원"
         carFuelEfficiency.text = if (car.fuelEfficiency > 0) {
-            "연비: ${car.fuelEfficiency} km/L"
+            "${car.fuelEfficiency} km/L"
         } else {
             "연비 정보 없음"
         }
         carDisplacement.text = if (car.displacement > 0) {
-            "배기량: ${car.displacement} cc"
+            "${car.displacement} cc"
         } else {
             "배기량 정보 없음"
         }
-        carType.text = "차종: ${car.type}"
+        carType.text = "${car.type}"
 
         Glide.with(this)
             .load(car.imageResId)
             .into(carImage)
     }
+
+
+
 }

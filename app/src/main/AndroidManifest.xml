@@ -12,13 +12,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CarApp"
         tools:targetApi="31">
-
-        <meta-data
-            android:name="com.google.android.actions"
-            android:resource="@menu/bottom_nav_menu" />
-
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.CarListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.DetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.IntroActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,9 +33,11 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".activities.DetailActivity"
-            android:exported="false"
-            android:theme="@style/Theme.CarApp" />
+
+
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@menu/bottom_nav_menu" />
     </application>
+
 </manifest>
