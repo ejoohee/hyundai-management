@@ -34,12 +34,10 @@ class CarAdapter(private val onCarClick: (Car) -> Unit) :
     inner class CarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val carImage: ImageView = itemView.findViewById(R.id.carImage)
         private val carName: TextView = itemView.findViewById(R.id.carName)
-        private val carPrice: TextView = itemView.findViewById(R.id.carPrice)
 
         fun bind(car: Car) {
             // 이름과 가격 설정
             carName.text = car.name
-            carPrice.text = "${car.price} 만원"
 
             // 이미지 로드 (리소스 ID)
             Glide.with(itemView.context)
