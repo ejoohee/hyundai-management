@@ -25,6 +25,9 @@
             android:name=".activities.DetailActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.IntroActivity"
             android:exported="true">
             <intent-filter>
@@ -32,8 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
 
         <meta-data
             android:name="com.google.android.actions"

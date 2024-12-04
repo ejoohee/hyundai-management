@@ -18,11 +18,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hyundai"
+            android:text="My Hyundai"
             android:textColor="@android:color/white"
             android:textSize="22sp"
             android:textStyle="bold"
             android:fontFamily="@font/hana_medium" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="44dp"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/intro" />
 
         <Space
             android:layout_width="0dp"
@@ -39,24 +45,19 @@
     </LinearLayout>
 
     <!-- 차량 리스트 -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/backgroundLight"
-        android:clipToPadding="false"
-        android:padding="8dp" />
 
-    <!-- 하단 네비게이션 -->
+
+    <fragment
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:navGraph="@navigation/nav_graph" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/bottom_nav_menu"
-        app:itemIconTint="@android:color/white"
-        app:itemTextColor="@android:color/white"
-        app:labelVisibilityMode="labeled"
-        app:backgroundTint="@color/mainColor"
-        android:elevation="8dp" />
+        app:menu="@menu/bottom_nav_menu" />
 </LinearLayout>
