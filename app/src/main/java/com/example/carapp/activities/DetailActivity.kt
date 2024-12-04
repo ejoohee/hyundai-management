@@ -30,10 +30,10 @@ class DetailActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼 활성화
-        supportActionBar?.setDisplayShowTitleEnabled(false) // 제목 숨김
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         toolbar.setNavigationOnClickListener {
-            onBackPressed() // 뒤로가기 버튼 동작
+            onBackPressed()
         }
 
         // 뷰 초기화
@@ -45,7 +45,6 @@ class DetailActivity : AppCompatActivity() {
         carImage = findViewById(R.id.carImage)
         submitButton = findViewById(R.id.submitButton)
 
-        // 전달받은 자동차 정보 표시
         val car = intent.getParcelableExtra<Car>("car")
         car?.let {
             carId = it.id
@@ -79,7 +78,6 @@ class DetailActivity : AppCompatActivity() {
         }
         carType.text = "${car.type}"
 
-        // Glide로 이미지 리소스 로드
         Glide.with(this)
             .load(car.imageResId)
             .into(carImage)
