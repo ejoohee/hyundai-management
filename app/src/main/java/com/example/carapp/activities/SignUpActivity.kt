@@ -92,9 +92,6 @@ class SignUpActivity : AppCompatActivity() {
                         // Firestore에 사용자 데이터 저장
                         saveUserData(user)
                     }
-
-                    val intent = Intent(this, IntroActivity::class.java)
-                    startActivity(intent)
                 } else {
                     // 에러 처리
                     Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
@@ -112,6 +109,10 @@ class SignUpActivity : AppCompatActivity() {
             .set(user) // 사용자 객체를 저장
             .addOnSuccessListener {
                 Log.d("SignUpActivity", "User data successfully written!")
+
+                val intent = Intent(this, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
             }
             .addOnFailureListener { e ->
                 Log.e("SignUpActivity", "Error writing document", e)
