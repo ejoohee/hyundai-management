@@ -21,7 +21,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/carTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -36,7 +36,7 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView5"
+                    android:id="@+id/carImageView"
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
                     android:src="@drawable/avante_25my" />
@@ -51,6 +51,7 @@
                     android:padding="10dp">
 
                     <LinearLayout
+                        android:id="@+id/powerLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginTop="5dp"
@@ -61,14 +62,14 @@
                         android:padding="5dp">
 
                         <ImageView
-                            android:id="@+id/imageView6"
+                            android:id="@+id/imageView"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:src="@drawable/ic_power"
                             app:srcCompat="@drawable/ic_power" />
 
                         <TextView
-                            android:id="@+id/textView8"
+                            android:id="@+id/isPowerTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="켜짐"
@@ -96,7 +97,7 @@
                             android:src="@drawable/ic_share" />
 
                         <TextView
-                            android:id="@+id/textView9"
+                            android:id="@+id/connectTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -123,7 +124,7 @@
                             app:srcCompat="@drawable/ic_guage" />
 
                         <TextView
-                            android:id="@+id/textView8"
+                            android:id="@+id/distanceTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="472km"
@@ -136,68 +137,100 @@
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:scrollbars="none">
 
                 <LinearLayout
+                    android:id="@+id/horizontalLayout"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:id="@+id/card1"
+                        android:layout_width="350dp"
+                        android:layout_height="200dp"
+                        android:layout_margin="20dp"
+                        android:scaleX="1"
+                        android:scaleY="1"
+                        android:layout_gravity="center"
+                        app:cardElevation="5dp">
 
                         <ImageView
-                            android:id="@+id/imageView9"
-                            android:layout_width="350dp"
-                            android:layout_height="200dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:src="@drawable/banner1" />
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:id="@+id/card2"
+                        android:layout_width="350dp"
+                        android:layout_height="200dp"
+                        android:layout_margin="20dp"
+                        android:scaleX="1"
+                        android:scaleY="1"
+                        android:layout_gravity="center"
+                        app:cardElevation="5dp">
 
                         <ImageView
-                            android:id="@+id/imageView9"
-                            android:layout_width="350dp"
-                            android:layout_height="200dp"
-                            android:src="@drawable/banner1" />
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/banner2" />
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:id="@+id/card3"
+                        android:layout_width="350dp"
+                        android:layout_height="200dp"
+                        android:layout_margin="20dp"
+                        android:scaleX="1"
+                        android:scaleY="1"
+                        android:layout_gravity="center"
+                        app:cardElevation="5dp">
 
                         <ImageView
-                            android:id="@+id/imageView9"
-                            android:layout_width="350dp"
-                            android:layout_height="200dp"
-                            android:src="@drawable/banner1" />
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/banner3" />
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:id="@+id/card4"
+                        android:layout_width="350dp"
+                        android:layout_height="200dp"
+                        android:layout_margin="20dp"
+                        android:scaleX="1"
+                        android:scaleY="1"
+                        android:layout_gravity="center"
+                        app:cardElevation="5dp">
 
                         <ImageView
-                            android:id="@+id/imageView9"
-                            android:layout_width="350dp"
-                            android:layout_height="200dp"
-                            android:src="@drawable/banner1" />
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/banner4" />
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:id="@+id/card5"
+                        android:layout_width="350dp"
+                        android:layout_height="200dp"
+                        android:layout_margin="20dp"
+                        android:scaleX="1"
+                        android:scaleY="1"
+                        android:layout_gravity="center"
+                        app:cardElevation="5dp">
 
                         <ImageView
-                            android:id="@+id/imageView9"
-                            android:layout_width="350dp"
-                            android:layout_height="200dp"
-                            android:src="@drawable/banner1" />
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/banner5" />
                     </androidx.cardview.widget.CardView>
+
+                    <!-- Repeat for more items -->
                 </LinearLayout>
             </HorizontalScrollView>
 
@@ -222,7 +255,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/textView6"
+                            android:id="@+id/textView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="차량 제어"
@@ -230,7 +263,7 @@
                             android:textStyle="bold" />
 
                         <ImageView
-                            android:id="@+id/imageView7"
+                            android:id="@+id/imageView"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:layout_marginLeft="3dp"
@@ -257,6 +290,7 @@
                     android:paddingTop="20dp">
 
                     <LinearLayout
+                        android:id="@+id/lockLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_margin="20dp"
@@ -272,7 +306,7 @@
                             app:srcCompat="@drawable/ic_lock" />
 
                         <TextView
-                            android:id="@+id/textView8"
+                            android:id="@+id/lockTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="문 잠금"
@@ -280,6 +314,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/powerLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
@@ -298,7 +333,7 @@
                             app:srcCompat="@drawable/ic_power" />
 
                         <TextView
-                            android:id="@+id/textView8"
+                            android:id="@+id/powerTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="시동 켜기"
@@ -307,6 +342,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/openLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_margin="20dp"
@@ -322,7 +358,7 @@
                             app:srcCompat="@drawable/ic_unlocked" />
 
                         <TextView
-                            android:id="@+id/textView8"
+                            android:id="@+id/openTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="문 열기"
@@ -388,6 +424,7 @@
                     android:paddingTop="20dp">
 
                     <LinearLayout
+                        android:id="@+id/statusLockLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -403,7 +440,7 @@
                             app:srcCompat="@drawable/ic_lock" />
 
                         <TextView
-                            android:id="@+id/textView8"
+                            android:id="@+id/statusLockTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="잠김"
@@ -411,6 +448,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/statusFanLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
@@ -428,7 +466,7 @@
                             app:srcCompat="@drawable/ic_fan" />
 
                         <TextView
-                            android:id="@+id/textView8"
+                            android:id="@+id/statusFanTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="켜짐"
@@ -438,6 +476,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/statusDoorLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -453,7 +492,7 @@
                             app:srcCompat="@drawable/ic_car" />
 
                         <TextView
-                            android:id="@+id/textView8"
+                            android:id="@+id/statusDoorTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="닫힘"

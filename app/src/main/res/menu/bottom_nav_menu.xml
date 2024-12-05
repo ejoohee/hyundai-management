@@ -3,7 +3,19 @@
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/ic_home"
-        android:title="Home"/>
+        android:title="홈"/>
+    <item
+        android:id="@+id/controlFragment"
+        android:icon="@drawable/ic_control"
+        android:title="제어"/>
+    <item
+        android:id="@+id/statusFragment"
+        android:icon="@drawable/ic_status"
+        android:title="상태"/>
+    <item
+        android:id="@+id/mapFragment"
+        android:icon="@drawable/ic_map"
+        android:title="지도"/>
     <item
         android:id="@+id/myFragment"
         android:icon="@drawable/ic_my"
