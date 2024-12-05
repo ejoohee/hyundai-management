@@ -50,6 +50,9 @@
             android:name=".activities.UpdateCarActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.StatusActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.CarListActivity"
             android:exported="false" />
         <activity
@@ -78,7 +81,5 @@
             android:name="com.google.android.actions"
             android:resource="@menu/bottom_nav_menu" />
     </application>
-
-
 
 </manifest>
