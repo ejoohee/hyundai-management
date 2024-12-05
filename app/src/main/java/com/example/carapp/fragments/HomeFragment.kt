@@ -7,14 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.ScaleAnimation
 import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import com.example.carapp.R
+import com.example.carapp.api.WeatherResponse
+import com.example.carapp.api.WeatherRetrofitInstance
 import com.example.carapp.models.Car
 import com.example.carapp.models.User
 import com.example.carapp.models.UserCar
@@ -23,6 +22,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import org.w3c.dom.Text
+import retrofit2.Callback
+import retrofit2.Call
+import retrofit2.Response
 
 class HomeFragment : Fragment() {
     private val carList = listOf(
@@ -57,6 +59,8 @@ class HomeFragment : Fragment() {
     private lateinit var statusLockTextView:TextView
     private lateinit var statusFanTextView:TextView
     private lateinit var statusDoorTextView:TextView
+
+
 
     // Firestore 인스턴스 초기화
     val db: FirebaseFirestore = Firebase.firestore
@@ -109,6 +113,36 @@ class HomeFragment : Fragment() {
         statusFanTextView = view.findViewById<TextView>(R.id.statusFanTextView)
         statusDoorTextView = view.findViewById<TextView>(R.id.statusDoorTextView)
 
+        //닉네임
+        val nicknameTextView = view.findViewById<TextView>(R.id.nicknameTextView)
+
+        //날씨 불러오기
+        val weatherTextView = view.findViewById<TextView>(R.id.weatherTextView)
+        val apiKey = "8d525ca17ac7e94dbc662285ebda6323" // OpenWeatherMap에서 발급받은 API 키
+        val city = "Seoul"
+
+        // Retrofit으로 API 호출
+        WeatherRetrofitInstance.api.getCurrentWeather(city, apiKey)
+            .enqueue(object : Callback<WeatherResponse> {
+                override fun onResponse(
+                    call: Call<WeatherResponse>,
+                    response: Response<WeatherResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val weatherData = response.body()
+                        val temp = weatherData?.main?.temp
+                        val description = weatherData?.weather?.get(0)?.description
+                        weatherTextView.text = "현재 온도: $temp°C"
+                    } else {
+                        weatherTextView.text = "API 호출 실패: ${response.code()}"
+                    }
+                }
+
+                override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
+                    weatherTextView.text = "에러 발생: ${t.message}"
+                }
+            })
+
         //db의 userCar
         val userCar:UserCar
 
@@ -118,6 +152,15 @@ class HomeFragment : Fragment() {
 
         if (currentUser != null) {
             val currentUserId = currentUser.uid
+            getUser(currentUserId) { user ->
+                if (user != null) {
+                    nicknameTextView.text = user.nickname
+                } else {
+                    // 사용자 정보를 가져오는 데 실패했을 때 처리
+                    println("User not found or error occurred.")
+                }
+            }
+
             // userCar 정보 가져오기
             getUserCar(currentUserId) { userCar ->
                 if (userCar != null) {

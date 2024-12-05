@@ -81,10 +81,6 @@ class MyFragment : Fragment() {
             val currentUserId = currentUser.uid
             getUser(currentUserId) { user ->
                 if (user != null) {
-//                    Glide.with(requireContext())
-//                        .load(user.image) // 불러올 이미지의 URL 또는 URI
-//                        .placeholder(R.drawable.user)
-//                        .into(imageViewUser) // 이미지를 표시할 ImageView
                     textViewNickname.text = user.nickname
                     // 사용자의 carId에 맞는 차 이미지 가져오기
                     val carId = user.carId // 사용자의 carId를 가져옴
