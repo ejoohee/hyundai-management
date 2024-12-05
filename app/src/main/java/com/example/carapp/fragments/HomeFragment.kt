@@ -1,12 +1,19 @@
 package com.example.carapp.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.ScaleAnimation
+import android.widget.HorizontalScrollView
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import com.example.carapp.R
 import com.example.carapp.models.Car
 import com.example.carapp.models.User
@@ -47,9 +54,15 @@ class HomeFragment : Fragment() {
         Car("19", "싼타페", 3546.0, 11.8, 2199, "SUV", R.drawable.santafe_25my),
         Car("20", "팰리세이드", 3896.0, 9.5, 3498, "SUV", R.drawable.palisade_24my)
     )
+    private lateinit var statusLockTextView:TextView
+    private lateinit var statusFanTextView:TextView
+    private lateinit var statusDoorTextView:TextView
 
     // Firestore 인스턴스 초기화
     val db: FirebaseFirestore = Firebase.firestore
+
+    private val handler = Handler(Looper.getMainLooper())
+    private var currentCardIndex = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,20 +74,40 @@ class HomeFragment : Fragment() {
         val carTextView = view.findViewById<TextView>(R.id.carTextView)
         val carImageView = view.findViewById<ImageView>(R.id.carImageView)
 
+        //카드 배너
+        val bannerScroll = view.findViewById<HorizontalScrollView>(R.id.bannerScroll)
+        val bannerLayout = view.findViewById<LinearLayout>(R.id.bannerLayout)
+        val card1 = view.findViewById<ImageView>(R.id.card1)
+        val card2 = view.findViewById<ImageView>(R.id.card2)
+        val card3 = view.findViewById<ImageView>(R.id.card3)
+        val card4 = view.findViewById<ImageView>(R.id.card4)
+        val card5 = view.findViewById<ImageView>(R.id.card5)
+
+        val cards = listOf(card1, card2, card3, card4, card5)
+
+        // 자동 스크롤
+        startAutoScroll(bannerScroll, cards)
+
         //power, connect, 주행거리 정보
         val isPowerTextView = view.findViewById<TextView>(R.id.isPowerTextView)
         val connectTextView = view.findViewById<TextView>(R.id.connectTextView)
         val distanceTextView = view.findViewById<TextView>(R.id.distanceTextView)
         
         //차량제어
+        //잠금 버튼
+        val lockLayout = view.findViewById<LinearLayout>(R.id.lockLayout)
+        val powerLayout = view.findViewById<LinearLayout>(R.id.powerLayout)
+        val openLayout = view.findViewById<LinearLayout>(R.id.openLayout)
+
         val lockTextView = view.findViewById<TextView>(R.id.lockTextView)
         val powerTextView = view.findViewById<TextView>(R.id.powerTextView)
         val openTextView = view.findViewById<TextView>(R.id.openTextView)
 
         //내 차량 상태
-        val statusLockTextView = view.findViewById<TextView>(R.id.statusLockTextView)
-        val statusFanTextView = view.findViewById<TextView>(R.id.statusFanTextView)
-        val statusDoorTextView = view.findViewById<TextView>(R.id.statusDoorTextView)
+        val statusFanLayout = view.findViewById<LinearLayout>(R.id.statusFanLayout)
+        statusLockTextView = view.findViewById<TextView>(R.id.statusLockTextView)
+        statusFanTextView = view.findViewById<TextView>(R.id.statusFanTextView)
+        statusDoorTextView = view.findViewById<TextView>(R.id.statusDoorTextView)
 
         //db의 userCar
         val userCar:UserCar
@@ -136,6 +169,19 @@ class HomeFragment : Fragment() {
             }
 
         }
+
+        lockLayout.setOnClickListener {
+            updateIsLockUserCar(false)
+        }
+
+        openLayout.setOnClickListener {
+            updateIsLockUserCar(true)
+        }
+
+        statusFanLayout.setOnClickListener {
+            updateIstFanUserCar()
+        }
+
         return view
     }
         fun getUser(userId: String, callback: (User?) -> Unit) {
@@ -175,4 +221,120 @@ class HomeFragment : Fragment() {
                     callback(null) // 에러 발생 시 null 전달
                 }
         }
+
+    fun updateIsLockUserCar(isLock: Boolean) {
+        val auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
+
+        if (currentUser != null) {
+            val userId = currentUser.uid
+
+            // Firestore에서 UserCar 문서 가져오기
+            db.collection("UserCar")
+                .document(userId)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        // isOpen 값을 업데이트
+                        db.collection("UserCar")
+                            .document(userId)
+                            .update("isLock", isLock)
+                            .addOnSuccessListener {
+                                // UI 업데이트
+                                if (isLock) {
+                                    statusLockTextView.text = "열림"
+                                } else {
+                                    statusLockTextView.text = "닫힘"
+                                }
+                            }
+                            .addOnFailureListener { e ->
+                                println("Error updating document: $e")
+                            }
+                    } else {
+                        println("Document does not exist")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    println("Error getting document: $exception")
+                }
+        }
+    }
+
+    fun updateIstFanUserCar() {
+        val auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
+
+        if (currentUser != null) {
+            val userId = currentUser.uid
+
+            // Firestore에서 UserCar 문서 가져오기
+            db.collection("UserCar")
+                .document(userId)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        val currentFanStatus = document.getBoolean("isFan") ?: false // 현재 isFan 상태 가져오기
+
+                        // isFan 값을 반전시켜 업데이트
+                        db.collection("UserCar")
+                            .document(userId)
+                            .update("isFan", !currentFanStatus)
+                            .addOnSuccessListener {
+                                // UI 업데이트
+                                if (!currentFanStatus) {
+                                    statusFanTextView.text = "켜짐"
+                                } else {
+                                    statusFanTextView.text = "꺼짐"
+                                }
+                            }
+                            .addOnFailureListener { e ->
+                                println("Error updating document: $e")
+                            }
+                    } else {
+                        println("Document does not exist")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    println("Error getting document: $exception")
+                }
+        }
+    }
+    private fun startAutoScroll(scrollView: HorizontalScrollView, cards: List<ImageView>) {
+        val scrollRunnable = object : Runnable {
+            override fun run() {
+                // 다음 카드로 이동
+                currentCardIndex = (currentCardIndex + 1) % cards.size
+
+                // ScrollView로 스크롤 이동 (좌우 스크롤)
+                val targetCard = cards[currentCardIndex]
+                scrollView.smoothScrollTo(targetCard.left, 0)
+
+                // 카드 강조 애니메이션
+                highlightCard(cards)
+
+                // 3초 후 반복 실행
+                handler.postDelayed(this, 3000)
+            }
+        }
+
+        handler.post(scrollRunnable)
+    }
+
+    private fun highlightCard(cards: List<ImageView>) {
+        cards.forEachIndexed { index, card ->
+            if (index == currentCardIndex) {
+                // 확대 애니메이션
+                card.animate().scaleX(1.2f).scaleY(1.2f).setDuration(300).start()
+            } else {
+                // 원래 크기로 축소
+                card.animate().scaleX(1.0f).scaleY(1.0f).setDuration(300).start()
+            }
+        }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Handler 작업 중단
+        handler.removeCallbacksAndMessages(null)
+    }
+
 }
