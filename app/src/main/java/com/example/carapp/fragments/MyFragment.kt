@@ -2,14 +2,19 @@ package com.example.carapp.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
 import com.example.carapp.R
 import com.example.carapp.activities.IntroActivity
+import com.example.carapp.activities.PostListActivity
+import com.example.carapp.activities.UpdateCarActivity
 import com.example.carapp.models.Car
 import com.example.carapp.models.User
 import com.google.firebase.Firebase
@@ -50,6 +55,7 @@ class MyFragment : Fragment() {
 
     // Firestore 인스턴스 초기화
     val db: FirebaseFirestore = Firebase.firestore
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,10 +76,17 @@ class MyFragment : Fragment() {
         }
 
 
-        // 프로필 이미지뷰
+        // 차 정보 이미지뷰
         val imageViewCar = view.findViewById<ImageView>(R.id.imageViewCar)
         val textViewNickname = view.findViewById<TextView>(R.id.textViewNickname)
 
+        val carNumberTextView = view.findViewById<TextView>(R.id.carNumberTextview)
+
+        //차량 수정 버튼
+        val editTextView = view.findViewById<TextView>(R.id.editTextView)
+
+        //문의글 조회/수정/삭제
+        val postLayout = view.findViewById<LinearLayout>(R.id.PostLayout)
         // 내 정보 불러오기
         val auth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
@@ -82,6 +95,7 @@ class MyFragment : Fragment() {
             getUser(currentUserId) { user ->
                 if (user != null) {
                     textViewNickname.text = user.nickname
+                    carNumberTextView.text =user.carNumber
                     // 사용자의 carId에 맞는 차 이미지 가져오기
                     val carId = user.carId // 사용자의 carId를 가져옴
                     val car = carList.find { it.id == carId } // carList에서 해당 carId에 맞는 차 찾기
@@ -95,6 +109,16 @@ class MyFragment : Fragment() {
             }
         }
 
+        editTextView.setOnClickListener {
+            val intent = Intent(requireContext(), UpdateCarActivity::class.java)
+            startActivity(intent)
+            loadUserData()
+        }
+
+        postLayout.setOnClickListener {
+            val intent = Intent(requireContext(), PostListActivity::class.java)
+            startActivity(intent)
+        }
         return view
     }
 
@@ -115,5 +139,47 @@ class MyFragment : Fragment() {
                 println("Error getting document: $exception")
                 callback(null) // 에러 발생 시 null 전달
             }
+    }
+
+
+    fun loadUserData() {
+        val db = FirebaseFirestore.getInstance()
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        if (currentUser != null) {
+            val userRef = db.collection("users").document(currentUser.uid)
+
+            userRef.get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        // 업데이트된 user 데이터 읽어오기
+                        val carId = document.getString("carId")
+                        val carNumber = document.getString("carNumber")
+
+                        // 데이터 업데이트 후 UI 갱신 (예: 프래그먼트나 액티비티에 반영)
+                        updateUI(carId, carNumber)
+                    } else {
+                        Log.d("UpdateCarActivity", "No such document")
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.w("UpdateCarActivity", "Error getting document", e)
+                }
+        }
+    }
+
+    // UI 갱신 메서드 (예: TextView에 carId와 carNumber를 반영)
+    fun updateUI(carId: String?, carNumber: String?) {
+        val car = carList.find { it.id == carId }
+        view?.findViewById<TextView>(R.id.carNumberTextview)?.text = carNumber
+        if (car != null) {
+            view?.findViewById<ImageView>(R.id.imageViewCar)?.setImageResource(car.imageResId) // 해당 차의 이미지 리소스를 ImageView에 설정
+        }
+    }
+
+    // Fragment가 다시 화면에 보일 때마다 데이터 새로고침
+    override fun onResume() {
+        super.onResume()
+        loadUserData()
     }
 }
