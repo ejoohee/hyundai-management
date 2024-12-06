@@ -16,11 +16,14 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.carapp.R
 import com.example.carapp.models.Car
 import com.example.carapp.models.User
+import com.example.carapp.models.UserCar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SignUpActivity : AppCompatActivity() {
     lateinit var car: Car // lateinit으로 선언하여 초기화 전에 접근 가능
+
+    val firestore = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,7 +104,7 @@ class SignUpActivity : AppCompatActivity() {
 
     // Firestore에 사용자 데이터 저장
     private fun saveUserData(user: User) {
-        val firestore = FirebaseFirestore.getInstance()
+
 
         // 사용자 UID를 Firestore 문서 ID로 사용하여 저장
         firestore.collection("users")
@@ -109,6 +112,25 @@ class SignUpActivity : AppCompatActivity() {
             .set(user) // 사용자 객체를 저장
             .addOnSuccessListener {
                 Log.d("SignUpActivity", "User data successfully written!")
+
+                saveUserCar(user.id, user.carId)
+            }
+            .addOnFailureListener { e ->
+                Log.e("SignUpActivity", "Error writing document", e)
+            }
+    }
+
+    private fun saveUserCar(userId: String, carId: String) {
+        val userCar = UserCar(
+            userId = userId,
+            carId = carId,
+            temperature = "22.0"
+        )
+
+        firestore.collection("UserCar")
+            .add(userCar) // 사용자 객체를 저장
+            .addOnSuccessListener {
+                Log.d("SignUpActivity", "UserCar data successfully written!")
 
                 val intent = Intent(this, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
