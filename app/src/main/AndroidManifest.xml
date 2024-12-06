@@ -80,6 +80,10 @@
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@menu/bottom_nav_menu" />
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="ez14ayxcej" />
     </application>
 
 </manifest>
