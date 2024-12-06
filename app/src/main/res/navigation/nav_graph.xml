@@ -20,7 +20,7 @@
         android:id="@+id/statusFragment"
         android:name="com.example.carapp.fragments.StatusFragment"
         android:label="상태"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_status" />
 
     <fragment
         android:id="@+id/mapFragment"
