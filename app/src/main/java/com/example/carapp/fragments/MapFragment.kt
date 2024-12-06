@@ -13,6 +13,7 @@ import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 
 class MapFragment : Fragment(), OnMapReadyCallback {
@@ -47,37 +48,68 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
 
-        val initialPosition = LatLng(37.481048, 126.882556)
-        val cameraPosition = CameraPosition(initialPosition, 16.0) // 16.0은 줌 레벨입니다. 필요에 따라 조정하세요.
+        val initialPosition = LatLng(37.481048, 126.882556) // 초기 위치
+        val cameraPosition = CameraPosition(initialPosition, 16.0) // 줌 레벨 16.0
         naverMap.cameraPosition = cameraPosition
 
-        // 초기 위치에 마커 추가 (선택 사항)
+        // 초기 위치에 마커 추가
         val marker = Marker()
         marker.position = initialPosition
         marker.map = naverMap
 
-        // 주유소 버튼 클릭 시 마커 추가
+        // 마커에 "내 위치" 텍스트 추가
+        val infoWindow = InfoWindow()
+        infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(requireContext()) {
+            override fun getText(infoWindow: InfoWindow): CharSequence {
+                return "내 차 위치"
+            }
+        }
+        infoWindow.open(marker)
+
+        // 이미지뷰 클릭 이벤트에 따른 장소 데이터 추가
         gasImageView.setOnClickListener {
-            addMarker(37.482616, 126.875186) // 주유소 위치
+            showMarkers(getGasStationLocations())
         }
 
-        // 주차장 버튼 클릭 시 마커 추가
         parkingImageView.setOnClickListener {
-            addMarker(37.482992, 126.882481) // 주차장 위치
+            showMarkers(getParkingLocations())
         }
 
-        // 세차장 버튼 클릭 시 마커 추가
         washImageView.setOnClickListener {
-            addMarker(37.477609, 126.878919) // 세차장 위치
-//            addMarker()
+            showMarkers(getCarWashLocations())
         }
     }
 
-    fun addMarker() {
-        val marker = Marker()
-        marker.position = LatLng(37.570559, 126.982993)
-        marker.map = naverMap
+    // 장소 데이터를 제공하는 함수들
+    private fun getGasStationLocations(): List<Pair<LatLng, String>> {
+        return listOf(
+            Pair(LatLng(37.482836, 126.875342), "S-OIL 구광주유소"),
+            Pair(LatLng(37.481737, 126.887544), "해피차지 가산본점(전기차 급속충전소)")
+        )
     }
+
+    private fun getParkingLocations(): List<Pair<LatLng, String>> {
+        return listOf(
+            Pair(LatLng(37.483300, 126.882744), "가산디지털역환승 노상주차장"),
+            Pair(LatLng(37.482687, 126.882744), "가산주차장"),
+            Pair(LatLng(37.477471, 126.895610), "가산동공영주차장")
+        )
+    }
+
+    private fun getCarWashLocations(): List<Pair<LatLng, String>> {
+        return listOf(
+            Pair(LatLng(37.478498, 126.880555), "세홍세차기"),
+            Pair(LatLng(
+                37.477795, 126.879300), "쎌차디테일링"),
+            Pair(LatLng(37.478259, 126.889294), "스팀파워가산점")
+        )
+    }
+
+//    fun addMarker() {
+//        val marker = Marker()
+//        marker.position = LatLng(37.570559, 126.982993)
+//        marker.map = naverMap
+//    }
 
     private fun addMarker(lat: Double, lng: Double) {
         // 기존 마커를 제거
@@ -92,10 +124,41 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         marker.map = naverMap
         markers.add(marker)
 
-        // 카메라를 해당 위치로 이동 (선택 사항)
+        // 카메라를 해당 위치로 이동
         naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(lat, lng)))
     }
 
+    // 마커 표시 함수
+    private fun showMarkers(locations: List<Pair<LatLng, String>>) {
+        // 기존 마커 삭제
+        for (marker in markers) {
+            marker.map = null
+        }
+        markers.clear()
+
+        // 새 마커 추가
+        for ((location, name) in locations) {
+            val marker = Marker()
+            marker.position = location
+            marker.map = naverMap
+
+            // InfoWindow 추가
+            val infoWindow = InfoWindow()
+            infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(requireContext()) {
+                override fun getText(infoWindow: InfoWindow): CharSequence {
+                    return name
+                }
+            }
+            infoWindow.open(marker)
+
+            markers.add(marker)
+        }
+
+        // 첫 번째 위치로 카메라 이동
+        if (locations.isNotEmpty()) {
+            naverMap.moveCamera(CameraUpdate.scrollTo(locations.first().first))
+        }
+    }
 
 
     override fun onStart() {
