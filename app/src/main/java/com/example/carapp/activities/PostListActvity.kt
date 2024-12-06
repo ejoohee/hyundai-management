@@ -70,6 +70,8 @@ class PostListActivity : AppCompatActivity() {
             // myFragment로 이동하는 코드
             val fragment = MyFragment() // MyFragment는 이동하려는 프래그먼트 클래스
             val transaction = supportFragmentManager.beginTransaction()
+
+            // 프래그먼트를 삽입할 부모 컨테이너를 지정
             transaction.replace(R.id.myFragment, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
