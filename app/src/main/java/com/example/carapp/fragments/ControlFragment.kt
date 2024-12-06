@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.carapp.R
+import com.example.carapp.models.Car
 import com.example.carapp.models.UserCar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -37,6 +38,8 @@ class ControlFragment : Fragment() {
     private lateinit var seekBar: SeekBar
     private var currentTemperature: Float = 24.0f
 
+    private lateinit var textViewCarName: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,6 +53,8 @@ class ControlFragment : Fragment() {
     }
 
     private fun initializeViews(view: View) {
+        textViewCarName = view.findViewById(R.id.textViewCarName)
+
         imageViewLocked = view.findViewById(R.id.imageViewLocked)
         imageViewOpen = view.findViewById(R.id.imageViewOpen)
         imageViewPowerOff = view.findViewById(R.id.imageViewPowerOff)
@@ -85,6 +90,27 @@ class ControlFragment : Fragment() {
                     Log.e("ControlFragment", "Error fetching user car data", e)
                 }
         } ?: Log.e("ControlFragment", "User ID is null")
+    }
+
+    // Car 데이터를 Firestore에서 가져오는 함수
+    private fun fetchCarData(carId: String?) {
+        carId?.let { id ->
+            firestore.collection("Car")
+                .document(id)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        val car = document.toObject(Car::class.java)
+                        textViewCarName.text = car?.name ?: "Unknown Car" // 차 이름 업데이트
+                    } else {
+                        textViewCarName.text = "Car not found"
+                        Log.w("ControlFragment", "No Car found with carId: $id")
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.e("ControlFragment", "Error fetching car data", e)
+                }
+        } ?: Log.e("ControlFragment", "Car ID is null")
     }
 
     private fun setUI() {
