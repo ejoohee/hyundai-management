@@ -8,7 +8,7 @@ data class UserCar(
     //시동 키기
     var isPower:Boolean=false,
     //주행거리
-    var distance:String="",
+    var distance:String="456q",
     //블루투스 연결
     var isConnect:Boolean=true,
     //에어컨 on off
