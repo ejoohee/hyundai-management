@@ -305,10 +305,10 @@
                             android:padding="5dp">
 
                             <ImageView
-                                android:id="@+id/gasImageView"
+                                android:id="@+id/offImageView"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:src="@drawable/ic_power"
+                                android:src="@drawable/ic_x"
                                 app:srcCompat="@drawable/ic_x" />
 
                             <TextView
@@ -339,10 +339,10 @@
                             android:padding="5dp">
 
                             <ImageView
-                                android:id="@+id/parkingImageView"
+                                android:id="@+id/middleImageView"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:src="@drawable/ic_power"
+                                android:src="@drawable/ic_wind"
                                 app:srcCompat="@drawable/ic_wind" />
 
                             <TextView
@@ -372,10 +372,10 @@
                             android:padding="5dp">
 
                             <ImageView
-                                android:id="@+id/washImageView"
+                                android:id="@+id/strongImageView"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:src="@drawable/ic_lock"
+                                android:src="@drawable/ic_hitter"
                                 app:srcCompat="@drawable/ic_hitter" />
 
                             <TextView
