@@ -1,22 +1,15 @@
 package com.example.carapp.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import com.example.carapp.R
-import com.example.carapp.activities.IntroActivity
-import com.example.carapp.models.Car
-import com.example.carapp.models.User
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraPosition
+import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
@@ -45,14 +38,23 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         mapView.getMapAsync(this)
 
         // ImageView 초기화
-        gasImageView = view.findViewById(R.id.gasImageView)
-        parkingImageView = view.findViewById(R.id.parkingImageView)
-        washImageView = view.findViewById(R.id.washImageView)
+        gasImageView = view.findViewById(R.id.offImageView)
+        parkingImageView = view.findViewById(R.id.middleImageView)
+        washImageView = view.findViewById(R.id.strongImageView)
 
         return view
     }
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
+
+        val initialPosition = LatLng(37.481048, 126.882556)
+        val cameraPosition = CameraPosition(initialPosition, 16.0) // 16.0은 줌 레벨입니다. 필요에 따라 조정하세요.
+        naverMap.cameraPosition = cameraPosition
+
+        // 초기 위치에 마커 추가 (선택 사항)
+        val marker = Marker()
+        marker.position = initialPosition
+        marker.map = naverMap
 
         // 주유소 버튼 클릭 시 마커 추가
         gasImageView.setOnClickListener {
@@ -67,7 +69,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // 세차장 버튼 클릭 시 마커 추가
         washImageView.setOnClickListener {
             addMarker(37.477609, 126.878919) // 세차장 위치
+//            addMarker()
         }
+    }
+
+    fun addMarker() {
+        val marker = Marker()
+        marker.position = LatLng(37.570559, 126.982993)
+        marker.map = naverMap
     }
 
     private fun addMarker(lat: Double, lng: Double) {
@@ -82,7 +91,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         marker.position = LatLng(lat, lng)
         marker.map = naverMap
         markers.add(marker)
+
+        // 카메라를 해당 위치로 이동 (선택 사항)
+        naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(lat, lng)))
     }
+
+
 
     override fun onStart() {
         super.onStart()

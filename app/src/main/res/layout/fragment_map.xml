@@ -96,7 +96,7 @@
                     android:padding="5dp">
 
                     <ImageView
-                        android:id="@+id/gasImageView"
+                        android:id="@+id/offImageView"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
                         android:background="@drawable/circle_background"
@@ -131,7 +131,7 @@
                     android:padding="5dp">
 
                     <ImageView
-                        android:id="@+id/parkingImageView"
+                        android:id="@+id/middleImageView"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
                         android:background="@drawable/circle_background"
@@ -166,7 +166,7 @@
                     android:padding="5dp">
 
                     <ImageView
-                        android:id="@+id/washImageView"
+                        android:id="@+id/strongImageView"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
                         android:background="@drawable/circle_background"
