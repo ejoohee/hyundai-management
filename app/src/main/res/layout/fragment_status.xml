@@ -305,14 +305,14 @@
                             android:padding="5dp">
 
                             <ImageView
-                                android:id="@+id/offImageView"
+                                android:id="@+id/gasImageView"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:src="@drawable/ic_power"
                                 app:srcCompat="@drawable/ic_x" />
 
                             <TextView
-                                android:id="@+id/isOffTextView"
+                                android:id="@+id/isGasTextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="꺼짐"
@@ -339,14 +339,14 @@
                             android:padding="5dp">
 
                             <ImageView
-                                android:id="@+id/middleImageView"
+                                android:id="@+id/parkingImageView"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:src="@drawable/ic_power"
                                 app:srcCompat="@drawable/ic_wind" />
 
                             <TextView
-                                android:id="@+id/isMiddelTextView"
+                                android:id="@+id/isParkingTextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="약함"
@@ -372,14 +372,14 @@
                             android:padding="5dp">
 
                             <ImageView
-                                android:id="@+id/strongImageView"
+                                android:id="@+id/washImageView"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:src="@drawable/ic_lock"
                                 app:srcCompat="@drawable/ic_hitter" />
 
                             <TextView
-                                android:id="@+id/isStrongTextView"
+                                android:id="@+id/isWashTextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="강함"

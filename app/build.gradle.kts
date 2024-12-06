@@ -76,4 +76,7 @@ dependencies {
     // 글라이드
     implementation("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
+
+    // 네이버 지도 SDK
+    implementation("com.naver.maps:map-sdk:3.19.1")
 }
