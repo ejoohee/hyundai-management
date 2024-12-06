@@ -14,7 +14,7 @@
         android:id="@+id/controlFragment"
         android:name="com.example.carapp.fragments.ControlFragment"
         android:label="제어"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_control" />
 
     <fragment
         android:id="@+id/statusFragment"
@@ -26,7 +26,7 @@
         android:id="@+id/mapFragment"
         android:name="com.example.carapp.fragments.MapFragment"
         android:label="지도"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_map" />
 
     <fragment
         android:id="@+id/myFragment"
